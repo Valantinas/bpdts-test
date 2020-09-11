@@ -1,21 +1,29 @@
 ### Brief
 
+TODO
+
+Lucene Spatial library by Apache is used to calculate distance from central London location.
+
+Integration test uses wiremock http://wiremock.org/ to simulate responses from the actual API 
+and restassured https://rest-assured.io/ is used for validating our API response.
+
 ### Instructions
 
 Use the following commands to work with this project
 
-Run
-`bash run.sh`
+Build
+`bash build.sh`
 
 Test
 `bash test.sh`
 
-Build
-`bash build.sh`
+Run
+`bash run.sh`
 
+After spring boot application is initialized, you can access the API endpoint in a browser:
+`http://localhost:8080/city/London/users` 
 
-##### Terms of use
-The Application is provided "as is" without any warranties - please use at your own risk. 
-Author does not take any responsibility for any damage caused through use of this application.
+or using curl command:
+`curl -X GET "http://localhost:8080/city/London/users" -H "accept: application/json"`
 
 © RV 2020

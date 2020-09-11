@@ -1,14 +1,18 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+
 group 'apitest'
 version '1.0'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
+
+
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-gradle-plugin:2.3.3.RELEASE'
@@ -16,16 +20,20 @@ dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-openfeign:2.2.5.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
     compile 'org.apache.lucene:lucene-spatial:8.4.1'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test:2.3.3.RELEASE'
+    testCompile "io.rest-assured:rest-assured:4.3.1"
+    testCompile "org.springframework.boot:spring-boot-starter-test:2.3.3.RELEASE"
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+    testCompile "com.github.tomakehurst:wiremock-jre8:2.27.2"
 }
 
 test {
     useJUnitPlatform()
 }
 
-mainClassName = 'uk.gov.dwp.apitest.Main'
+mainClassName = 'uk.gov.dwp.apitest.ServiceApplication'
 
 jar {
     archiveName 'apitest.jar'
@@ -34,3 +42,4 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+

@@ -6,9 +6,12 @@ import uk.gov.dwp.apitest.model.User;
 
 import java.util.List;
 
-@FeignClient(name = "users", url = "https://bpdts-test-app-v3.herokuapp.com")
+@FeignClient(name = "users", url = "${userApi.host}")
 public interface RestClient {
 
         @GetMapping(value = "/users", consumes = "application/json")
-        List<User> get();
+        List<User> getAllUsers();
+
+        @GetMapping(value = "/city/London/users", consumes = "application/json")
+        List<User> getLondonUsers();
 }
