@@ -22,11 +22,11 @@ Test
 Run
 `bash run.sh`
 
-After spring boot application started, you can call the API endpoint using the following command line:
+After spring boot application starts, you can call the API endpoint using the following command line:
 `curl -X GET "http://localhost:8080/London/users" -H "accept: application/json"`
 
 alternatively you can see the response in the browser:
 `http://localhost:8080/London/users` 
 
 
-© RV 2020
+© Rokas Valantinas 2020

@@ -22,7 +22,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(SpringExtension.class)
-public class UserApplicationTest extends IntegrationSpecification {
+class UserApplicationTest extends IntegrationSpecification {
 
     @Test
     void shouldReturnAnEmptyBodyIfThereAreNoUsersFromLondonOrWhoseCoordinatesWithin60Miles() {
@@ -76,6 +76,49 @@ public class UserApplicationTest extends IntegrationSpecification {
                 .body("[0].first_name", is("Tiffi"))
                 .body("[0].last_name", is("Colbertson"))
                 .body("[0].ip_address", is("141.49.93.0"));
+    }
+
+
+    @Test
+    void shouldReturnA500ResponseIfCallToUsersAPIFails() {
+
+        stubFor(get(urlEqualTo("/users"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withBody("error")));
+
+        stubFor(get(urlEqualTo("/city/London/users"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("london-users.json")));
+
+        Response response = given()
+                .get("/London/users");
+
+        response.then()
+                .statusCode(500);
+    }
+
+    @Test
+    void shouldReturnA500ResponseIfCallToCityLondonUsersAPIFails() {
+
+        stubFor(get(urlEqualTo("/users"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("all-users.json")));
+
+        stubFor(get(urlEqualTo("/city/London/users"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withBody("error")));
+
+        Response response = given()
+                .get("/London/users");
+
+        response.then()
+                .statusCode(500);
     }
 
 }
