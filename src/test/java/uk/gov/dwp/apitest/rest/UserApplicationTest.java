@@ -16,6 +16,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -35,7 +36,7 @@ public class UserApplicationTest extends IntegrationSpecification {
                         Collections.emptyList()))));
 
         Response response = given()
-                .get("/city/London/users");
+                .get("/London/users");
 
         response.then()
                 .statusCode(200)
@@ -60,13 +61,21 @@ public class UserApplicationTest extends IntegrationSpecification {
 
 
         Response response = given()
-                .get("/city/London/users");
+                .get("/London/users");
 
         response.then()
                 .statusCode(200)
                 .assertThat()
                 .body("size()", is(9))
-                .body("id", hasItems(688, 322, 658, 135, 520, 554, 266, 794, 396));
+                .body("id", hasItems(688, 322, 658, 135, 520, 554, 266, 794, 396))
+
+                .body("[0].id", is(688))
+                .body("[0].email", is("tcolbertsonj3@vimeo.com"))
+                .body("[0].latitude", equalTo(37.13f))
+                .body("[0].longitude", equalTo(-84.08f))
+                .body("[0].first_name", is("Tiffi"))
+                .body("[0].last_name", is("Colbertson"))
+                .body("[0].ip_address", is("141.49.93.0"));
     }
 
 }

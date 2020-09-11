@@ -11,7 +11,7 @@ import uk.gov.dwp.apitest.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/city/London/users")
+@RequestMapping(value = "/London/users")
 public class UserController {
 
     private final RestClient restClient;

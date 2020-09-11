@@ -63,5 +63,4 @@ class UserServiceTest {
         assertEquals(user3, mergedList.get(2));
     }
 
-
 }
