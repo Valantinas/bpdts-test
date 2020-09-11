@@ -14,14 +14,14 @@ class UserServiceTest {
     private UserService underTest = new UserService();
 
     @Test
-    void shouldIdentifyUsersVisitingLondon() {
+    void shouldIFindUsersVisitingLondon() {
         // GIVEN
         User userInLondon = User.builder().latitude(51.451841).longitude(-0.054862).build();
         User userAwayFromLondon = User.builder().latitude(23.945891).longitude(104.412274).build();
         List<User> userList = asList(userInLondon, userAwayFromLondon);
 
         // WHEN
-        List<User> londonVisitors = underTest.getUsersVisitingLondon(userList);
+        List<User> londonVisitors = underTest.findUsersVisitingLondon(userList);
 
         // THEN
         assertEquals(1, londonVisitors.size());
@@ -36,7 +36,7 @@ class UserServiceTest {
         User user3 = User.builder().id(3).latitude(32.6797904).longitude(-5.5781378).build();
 
         // WHEN
-        List<User> mergedList = underTest.mergeListsWithDistinctUsers(asList(user1, user2), singletonList(user3));
+        List<User> mergedList = underTest.mergeListsOmittingDuplicateUsers(asList(user1, user2), singletonList(user3));
 
         // THEN
         assertEquals(3, mergedList.size());
@@ -54,7 +54,7 @@ class UserServiceTest {
         User user3 = User.builder().id(3).latitude(32.6797904).longitude(-5.5781378).build();
 
         // WHEN
-        List<User> mergedList = underTest.mergeListsWithDistinctUsers(asList(user1, user2), asList(user2, user3));
+        List<User> mergedList = underTest.mergeListsOmittingDuplicateUsers(asList(user1, user2), asList(user2, user3));
 
         // THEN
         assertEquals(3, mergedList.size());

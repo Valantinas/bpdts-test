@@ -22,7 +22,7 @@ public class UserService {
     private static final double LONDON_CENTRE_LONGITUDE = 0.1277;
 
 
-    public List<User> getUsersVisitingLondon(List<User> users) {
+    public List<User> findUsersVisitingLondon(List<User> users) {
 
         return users.stream()
                 .filter(this::distanceWithin60milesFromLondon)
@@ -30,11 +30,11 @@ public class UserService {
     }
 
 
-    public List<User> mergeListsWithDistinctUsers(List<User> users1, List<User> users2) {
+    public List<User> mergeListsOmittingDuplicateUsers(List<User> users1, List<User> users2) {
         Collection<User> values = Stream
                 .of(users1, users2)
                 .flatMap(List::stream)
-                .collect(toMap(User::getId, d -> d, (User x, User y) -> x))
+                .collect(toMap(User::getId, u -> u, (User user1, User user2) -> user1))
                 .values();
 
         return new ArrayList<>(values);

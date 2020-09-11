@@ -23,14 +23,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getLondoners() {
+    public ResponseEntity<List<User>> getLondonResidentsOrVisitors() {
 
         List<User> londoners = restClient.getLondonUsers();
 
         List<User> allUsers = restClient.getAllUsers();
-        List<User> londonVisitors = userService.getUsersVisitingLondon(allUsers);
+        List<User> londonVisitors = userService.findUsersVisitingLondon(allUsers);
 
-        List<User> londonersOrVisitors = userService.mergeListsWithDistinctUsers(londoners, londonVisitors);
+        List<User> londonersOrVisitors = userService.mergeListsOmittingDuplicateUsers(londoners, londonVisitors);
 
         return ResponseEntity.ok(londonersOrVisitors);
     }
