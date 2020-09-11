@@ -9,26 +9,31 @@ Feignclient (https://cloud.spring.io/spring-cloud-openfeign/reference/html/) lib
 Integration test uses wiremock (http://wiremock.org/) to simulate responses from the actual API 
 and restassured https://rest-assured.io/ is used for validating response from our new API endpoint.
 
-Note: Wiremock runs on a port 8081 assuming it is available
+Note: Wiremock runs on a port 8081 which must be available for the test to pass
+
+### REST API
+This service uses swagger to expose the API Documentation. Simply navigate to localhost:8080/swagger-ui.html to see the details.
 
 ### Instructions
 
 Use the following commands to work with this project
 
-Build
-`bash build.sh`
+Build it
+```bash build.sh```
 
-Test
-`bash test.sh`
+Test it
+```bash test.sh```
 
-Run
-`bash run.sh`
+Run it
+```bash run.sh```
+It can also easily be run via the IDE just like an other springboot application e.g. to run via Intellij simply locate the ServiceApplication class within the application module and select "Run".
 
-After spring boot application starts, you can call the API endpoint using the following command line:\
-`curl -X GET "http://localhost:8080/London/users" -H "accept: application/json"`
+After spring boot application starts, you can call new API endpoint using the following command line:\
+```curl -X GET "http://localhost:8080/London/users" -H "accept: application/json"```
 
-Alternatively you can see the response in the browser:\
-`http://localhost:8080/London/users` 
+Alternatively you can see the response in a browser:
+```http://localhost:8080/London/users```
+
 
 
 © Rokas Valantinas 2020

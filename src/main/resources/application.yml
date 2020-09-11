@@ -1,2 +1,8 @@
 userApi:
   host: https://bpdts-test-app-v3.herokuapp.com
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /swagger.json
