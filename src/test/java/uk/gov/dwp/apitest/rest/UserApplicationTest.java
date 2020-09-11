@@ -2,6 +2,7 @@ package uk.gov.dwp.apitest.rest;
 
 import groovy.json.JsonOutput;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -24,22 +25,26 @@ import static org.hamcrest.Matchers.hasSize;
 @ExtendWith(SpringExtension.class)
 class UserApplicationTest extends IntegrationSpecification {
 
+    private static final String CITY_LONDON_USERS = "/city/London/users";
+    private static final String USERS = "/users";
+    private static final String LONDON_USERS = "/London/users";
+
     @Test
     void shouldReturnAnEmptyBodyIfThereAreNoUsersFromLondonOrWhoseCoordinatesWithin60Miles() {
 
-        givenThat(get(urlPathEqualTo("/users"))
+        givenThat(get(urlPathEqualTo(USERS))
                 .willReturn(okJson(JsonOutput.toJson(
                         Collections.emptyList()))));
 
-        givenThat(get(urlPathEqualTo("/city/London/users"))
+        givenThat(get(urlPathEqualTo(CITY_LONDON_USERS))
                 .willReturn(okJson(JsonOutput.toJson(
                         Collections.emptyList()))));
 
         Response response = given()
-                .get("/London/users");
+                .get(LONDON_USERS);
 
         response.then()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .body("", hasSize(0));
     }
@@ -47,13 +52,13 @@ class UserApplicationTest extends IntegrationSpecification {
     @Test
     void shouldReturnUsersFromLondonOrWhoseCoordinatesWithin60Miles() {
 
-        stubFor(get(urlEqualTo("/users"))
+        stubFor(get(urlEqualTo(USERS))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("all-users.json")));
 
-        stubFor(get(urlEqualTo("/city/London/users"))
+        stubFor(get(urlEqualTo(CITY_LONDON_USERS))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -61,7 +66,7 @@ class UserApplicationTest extends IntegrationSpecification {
 
 
         Response response = given()
-                .get("/London/users");
+                .get(LONDON_USERS);
 
         response.then()
                 .statusCode(200)
@@ -82,19 +87,19 @@ class UserApplicationTest extends IntegrationSpecification {
     @Test
     void shouldReturnA500ResponseIfCallToUsersAPIFails() {
 
-        stubFor(get(urlEqualTo("/users"))
+        stubFor(get(urlEqualTo(USERS))
                 .willReturn(aResponse()
                         .withStatus(500)
                         .withBody("error")));
 
-        stubFor(get(urlEqualTo("/city/London/users"))
+        stubFor(get(urlEqualTo(CITY_LONDON_USERS))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("london-users.json")));
 
         Response response = given()
-                .get("/London/users");
+                .get(LONDON_USERS);
 
         response.then()
                 .statusCode(500);
@@ -103,19 +108,19 @@ class UserApplicationTest extends IntegrationSpecification {
     @Test
     void shouldReturnA500ResponseIfCallToCityLondonUsersAPIFails() {
 
-        stubFor(get(urlEqualTo("/users"))
+        stubFor(get(urlEqualTo(USERS))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("all-users.json")));
 
-        stubFor(get(urlEqualTo("/city/London/users"))
+        stubFor(get(urlEqualTo(CITY_LONDON_USERS))
                 .willReturn(aResponse()
                         .withStatus(500)
                         .withBody("error")));
 
         Response response = given()
-                .get("/London/users");
+                .get(LONDON_USERS);
 
         response.then()
                 .statusCode(500);
